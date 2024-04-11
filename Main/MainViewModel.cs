@@ -52,7 +52,7 @@ namespace Main
                 UpdateSchedule(item);
             }
 
-
+            //TODO: 스케줄별 색상 배경 설정 하기, color id? 있던것으로 기억함 api 재확인 ㄱ
         }
 
         private void InitializeDays()
