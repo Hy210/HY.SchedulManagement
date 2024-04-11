@@ -1,0 +1,380 @@
+﻿<Window x:Class="HY.SchedulManagement.MainWindow"
+        x:Name="Host"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:HY.SchedulManagement"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1200"
+        d:DataContext="{d:DesignInstance Type={x:Type local:MainWindowViewModel}} " Background="#FF1D1C21">
+    <Window.Style>
+        <Style TargetType="Window">
+
+        </Style>
+    </Window.Style>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontFamily" Value="consolas"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="{x:Type Button}" >
+            <Setter Property="FontFamily" Value="consolas"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        </Style>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="RadioButton.Static.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="RadioButton.Static.Border" Color="RoyalBlue"/>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="RoyalBlue"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.Static.Glyph" Color="#FF5593FF"/>
+        <Style x:Key="HyRadioButtonStyle" TargetType="{x:Type RadioButton}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="radioButtonBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="100" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid x:Name="markGrid" Margin="2">
+                                    <Ellipse x:Name="optionMark" Fill="{StaticResource RadioButton.Static.Glyph}" MinWidth="6" MinHeight="6" Opacity="0"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0.56"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <SolidColorBrush Color="White" Opacity="0.8" x:Key="HalfTransBrush"></SolidColorBrush>
+        <Style TargetType="{x:Type Path}">
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Stroke" Value="White"/>
+            <Setter Property="Fill" Value="Gainsboro"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}, Path=IsMouseOver, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                    <Setter Property="Fill" Value="{StaticResource HalfTransBrush}" />
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="10" Color="White" ShadowDepth="0"></DropShadowEffect>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type Button}" x:Key="GlowButton">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Background" Value="Black"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+        <StackPanel Background="#FF1E1E1E" Orientation="Horizontal">
+
+            <StackPanel Height="{Binding Height, ElementName=Host}" 
+                        Width="750" 
+                        HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="70">
+                    <TextBlock Text="S" FontFamily="Univers LT 49 LightUltraCn" Foreground="RoyalBlue" FontSize="60" VerticalAlignment="Bottom" Height="68"></TextBlock>
+                    <TextBlock Text="chedule " FontFamily="Univers LT 49 LightUltraCn" FontSize="40" Height="50"  VerticalAlignment="Bottom"></TextBlock>
+                    <TextBlock Text="M" FontFamily="Univers LT 49 LightUltraCn" FontSize="60" Foreground="RoyalBlue" VerticalAlignment="Bottom" Height="68"></TextBlock>
+                    <TextBlock Text="anagement" FontFamily="Univers LT 49 LightUltraCn" FontSize="40" VerticalAlignment="Bottom" Height="50"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" 
+                            Width="350"
+                            Margin="10"
+                            HorizontalAlignment="Left" 
+                            Background="Beige">
+                    <Button Content="a"></Button>
+                    <TextBlock Text="Year" 
+                               Foreground="white" 
+                               FontSize="20" 
+                               FontFamily="consolas"></TextBlock>
+                    <TextBlock Text="년"
+                               Foreground="white" 
+                               FontSize="20" 
+                               FontFamily="consolas"></TextBlock>
+                    <TextBlock Text="Month" Foreground="white" FontSize="20" FontFamily="consolas"></TextBlock>
+                    <TextBlock Text="월" Foreground="white" FontSize="20" FontFamily="consolas"></TextBlock>
+                    <Button Content="a"></Button>
+                </StackPanel>
+
+                <UniformGrid Columns="7" Width="700" HorizontalAlignment="Left" Margin="10">
+                    <TextBlock Text="Sun" ></TextBlock>
+                    <TextBlock Text="Mon"></TextBlock>
+                    <TextBlock Text="Tue"></TextBlock>
+                    <TextBlock Text="Wen"></TextBlock>
+                    <TextBlock Text="Thu"></TextBlock>
+                    <TextBlock Text="Fri"></TextBlock>
+                    <TextBlock Text="Sat"></TextBlock>
+                </UniformGrid>
+                <ItemsControl x:Name="Items" ItemsSource="{Binding Days}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="7" Rows="6" Width="700" HorizontalAlignment="Left" Margin="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate >
+                            <Grid>
+                                <Label Width="200" Height="1" 
+                                       Background="LightBlue"
+                                       VerticalAlignment="Bottom"></Label>
+                                <Button x:Name="Daybutton" Width="100" Height="80" 
+                                        
+                                        Background="{Binding IsNow, Converter={local:BoolToBackGroundConverter}}">
+                                    <Button.InputBindings>
+                                        <MouseBinding Gesture="LeftDoubleClick"
+                                                      Command="{Binding ElementName=Items,
+                                                                        Path=DataContext.GenerateCommand}"
+                                                      CommandParameter="{Binding}"></MouseBinding>
+                                        <MouseBinding Gesture="LeftClick"
+                                                      Command="{Binding ElementName=Items,
+                                                                        Path=DataContext.SelectCommand}"
+                                                      CommandParameter="{Binding}"></MouseBinding>
+                                    </Button.InputBindings>
+                                    <Button.Content>
+                                        <StackPanel Width="100" Height="80">
+                                            <TextBlock Text="{Binding Date.Day}" 
+                                                       HorizontalAlignment="Center"
+                                                       Foreground="{Binding IsContain, Converter={local:BoolToForeGroundConverter}}"></TextBlock>
+                                        </StackPanel>
+
+                                    </Button.Content>
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" >
+                                            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                                            <Setter Property="FontFamily" Value="consolas"></Setter>
+                                            <Setter Property="FontSize" Value="20"></Setter>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                        <Border x:Name="Border"
+                                                                Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                BitmapEffect="{TemplateBinding BitmapEffect}">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                              VerticalAlignment="Center" />
+                                                        </Border>
+
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="BorderBrush" Value="RoyalBlue" TargetName="Border"></Setter>
+                                                                <Setter Property="BorderThickness" Value="1"  TargetName="Border"></Setter>
+                                                                <Setter Property="BitmapEffect" TargetName="Border">
+                                                                    <Setter.Value>
+                                                                        <OuterGlowBitmapEffect GlowColor="White" 
+                                                                                       Opacity="1"
+                                                                                       GlowSize="5"></OuterGlowBitmapEffect>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                            </Trigger>
+                                                            <Trigger Property="IsPressed" Value="True">
+                                                                <Setter Property="Background" Value="LawnGreen" TargetName="Border"></Setter>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+
+            <StackPanel>
+                <Label Background="LightCyan" 
+                       Height="700"
+                       Width="3"
+                       Margin="0,30,10,10">
+                    <Label.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"></Setter>
+                        </Style>
+                    </Label.Resources>
+                </Label>
+            </StackPanel>
+            <StackPanel Margin="30" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="G" 
+                               Foreground="RoyalBlue"
+                               FontFamily="Univers LT 49 LightUltraCn"
+                               FontSize="40"></TextBlock>
+                    <TextBlock Text="enerate "
+                               FontSize="30"
+                               VerticalAlignment="Bottom"
+                               FontFamily="Univers LT 49 LightUltraCn"></TextBlock>
+                    <TextBlock Text="S"
+                               FontSize="40"
+                               Foreground="RoyalBlue"
+                               FontFamily="Univers LT 49 LightUltraCn"></TextBlock>
+                    <TextBlock Text="chedule"
+                               FontSize="30"
+                               VerticalAlignment="Bottom"
+                               FontFamily="Univers LT 49 LightUltraCn"></TextBlock>
+                </StackPanel>
+
+                <Grid Margin="30">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                            <Setter Property="BorderBrush" Value="RoyalBlue"></Setter>
+                            <Setter Property="Foreground" Value="White"></Setter>
+                            <Setter Property="FontFamily" Value="Consolas"></Setter>
+                            <Setter Property="FontSize" Value="20"></Setter>
+                        </Style>
+
+                    </Grid.Resources>
+
+                    <TextBlock Margin="10" Grid.Column="0" Grid.Row="0" Text="To"></TextBlock>
+                    <TextBlock Margin="10" Grid.Column="0" Grid.Row="1" Text="From"></TextBlock>
+                    <TextBlock Margin="10" Grid.Column="0" Grid.Row="2" Text="Color"></TextBlock>
+                    <TextBox Grid.Column="1" Grid.Row="0" 
+                             Margin="10"
+                             Text="{Binding ToDate, StringFormat={}{0:yyyy-MM-dd}}" 
+                             IsReadOnly="True"></TextBox>
+                    <TextBox Grid.Column="1" Grid.Row="1" 
+                             Margin="10"
+                             Text="{Binding FromDate, StringFormat={}{0:yyyy-MM-dd}}" 
+                             IsReadOnly="True"></TextBox>
+
+                    <Rectangle Fill="Aqua" Grid.Column="1" Grid.Row="2"
+                               Width="25" Height="25">
+                        <Rectangle.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command=""></MouseBinding>
+                        </Rectangle.InputBindings>
+                    </Rectangle>
+
+                    <StackPanel Grid.Column="3" Grid.Row="0" 
+                                Grid.RowSpan="3"
+                                Margin="10" >
+                        <RadioButton BorderBrush="RoyalBlue" 
+                                     Margin="0,5,0,30"
+                                     IsChecked="{Binding IsToChecked, Mode=TwoWay}"
+                                     Style="{DynamicResource HyRadioButtonStyle}"></RadioButton>
+                        <RadioButton BorderBrush="RoyalBlue"
+                                     VerticalAlignment="Bottom"
+                                     IsChecked="{Binding IsFromChecked, Mode=TwoWay}"
+                                     Style="{DynamicResource HyRadioButtonStyle}"></RadioButton>
+                    </StackPanel>
+                </Grid>
+                <TextBox Background="Transparent"
+                         BorderBrush="RoyalBlue"
+                         FontFamily="consolas"
+                         FontSize="20"
+                         Foreground="White"
+                         Width="350"
+                         Height="30"
+                         
+                         Margin="10"
+                         Text="{Binding Description, Mode=TwoWay}">
+                    <TextBox.CaretBrush>
+                        <SolidColorBrush Color="AliceBlue"></SolidColorBrush>
+
+                    </TextBox.CaretBrush>
+                </TextBox>
+                <Button Foreground="White" 
+                        BorderBrush="RoyalBlue" 
+                        Margin="10"
+                        
+                        Content="Save"></Button>
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
+
+    
